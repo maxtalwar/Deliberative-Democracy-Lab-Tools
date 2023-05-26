@@ -2,21 +2,18 @@ import pandas as pd
 import glob
 import os
 
-# Step 0: Get all CSV file paths in the 'to_be_processed/' directory
+# Get all CSV file paths in the 'to_be_processed/' directory
 file_paths = glob.glob('to_be_processed/*.csv')
 
 for file_path in file_paths:
-    # Load the data
-    df = pd.read_csv(file_path)
+    # Load the data, indicating no header
+    df = pd.read_csv(file_path, skiprows=1)  # This will skip the first row
 
-    # Step 1: Delete row 1
-    df = df.iloc[1:]
+    # Delete 'id', 'logId', and 'chunkId' columns
+    df = df.drop(columns=['id', 'logId', 'chunkId'], errors='ignore')
 
-    # Step 2: Delete 'id', 'logId', and 'chunkID' columns
-    df = df.drop(columns=['id', 'logId', 'chunkID'], errors='ignore')
-
-    # Step 3: Rename 'userID' to 'speaker' and 'transcriptText' to 'text'
-    df = df.rename(columns={'userID': 'speaker', 'transcriptText': 'text'})
+    # Rename 'userId' to 'speaker' and 'transcriptText' to 'text'
+    df = df.rename(columns={'userId': 'speaker', 'transcriptText': 'text'})
 
     # Get the filename without the extension
     filename = os.path.basename(file_path).split('.')[0]
@@ -26,6 +23,6 @@ for file_path in file_paths:
 
     # Save the modified DataFrame to an Excel file
     df.to_excel(output_file_path, index=False)
-    
+
     # Delete the original file
     os.remove(file_path)
