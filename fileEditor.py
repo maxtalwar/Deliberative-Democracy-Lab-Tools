@@ -1,13 +1,23 @@
 import pandas as pd
 import glob
 import os
+from googletrans import Translator
 
+translator = Translator()
 # Get all CSV file paths in the 'to_be_processed/' directory
 file_paths = glob.glob('to_be_processed/*.csv')
+
 
 for file_path in file_paths:
     # Load the data, indicating no header
     df = pd.read_csv(file_path, skiprows=1)  # This will skip the first row
+
+    #translate the transcript text if necessary
+    language = file_path[14:16]
+    if language != "en":
+        col = df.values[df.columns.get_loc("transcriptText")]
+        for i in range(len(col)):
+            col[i] = translator.translate(col[i], src=language, dest="en")
 
     # Delete 'id', 'logId', and 'chunkId' columns
     df = df.drop(columns=['id', 'logId', 'chunkId'], errors='ignore')
