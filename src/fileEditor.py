@@ -19,7 +19,7 @@ for file_path in file_paths:
     #translate the transcript text if necessary
     language = filename[14:16]
     if language != "en":
-        for i in range(len(df. index)):
+        for i in range(len(df.index)):
             df.loc[i,'transcriptText'] = translator.translate(df.loc[i,'transcriptText'], src=language).text
 
     # Delete 'id', 'logId', and 'chunkId' columns
