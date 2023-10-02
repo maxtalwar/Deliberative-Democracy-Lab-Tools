@@ -2,7 +2,6 @@
 name = "warman-project"
 version = "0.1.0"
 description = ""
-authors = ["0xphoton <42502920+maxtalwar@users.noreply.github.com>"]
 readme = "README.md"
 packages = [{include = "warman_project"}]
 
